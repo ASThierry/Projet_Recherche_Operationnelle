@@ -1,11 +1,11 @@
 import os
 import pandas as pd
-from Objet import Objet
+from module.Objet import Objet
 
 class Objets:
     def __init__(self):
         self.all : [Objet] = []
-        self.__lire_excel("../data/velo.xlsx")
+        self.__lire_excel("data/velo.xlsx")
 
     def __lire_excel(self,chemin_fichier : str):
         """
