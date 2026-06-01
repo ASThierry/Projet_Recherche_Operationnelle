@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from Objet import Objet
 
-class Objets():
+class Objets:
     def __init__(self):
         self.all : [Objet] = []
         self.__lire_excel("../data/velo.xlsx")
@@ -38,11 +38,9 @@ class Objets():
             print(f"Erreur inattendue : {e}")
 
         return None
+
     def __str__(self):
         retour = ""
         for i in self.all:
             retour += i.__str__() + "\n"
         return retour
-
-test = Objets()
-print(test)
