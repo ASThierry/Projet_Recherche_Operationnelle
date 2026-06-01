@@ -1,9 +1,10 @@
 import os
 import pandas as pd
+from Objet import Objet
 
 class Objets():
     def __init__(self):
-        self.all = []
+        self.all : [Objet] = []
         self.__lire_excel("../data/velo.xlsx")
 
     def __lire_excel(self,chemin_fichier : str):
@@ -20,12 +21,14 @@ class Objets():
                 return None
 
             # Lecture du fichier Excel
-            self.all = pd.read_excel(
+            df = pd.read_excel(
                 chemin_fichier,
                 engine="openpyxl" if chemin_fichier.endswith(".xlsx") else None
             )
-
             print(f"Fichier '{chemin_fichier}' lu avec succès.")
+            for i in range(len(df)):
+                temp = Objet(df["Objet"][i], df["Masse"][i], df["Utilité"][i])
+                self.all.append(temp)
 
         except ValueError as ve:
             print(f"Erreur de lecture : {ve}")
@@ -33,4 +36,13 @@ class Objets():
             print("Erreur : fichier introuvable.")
         except Exception as e:
             print(f"Erreur inattendue : {e}")
+
         return None
+    def __str__(self):
+        retour = ""
+        for i in self.all:
+            retour += i.__str__() + "\n"
+        return retour
+
+test = Objets()
+print(test)
