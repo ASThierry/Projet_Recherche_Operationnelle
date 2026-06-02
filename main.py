@@ -1,5 +1,5 @@
 from module.Objets import Objets,Objet
-from fonction.notre_code import notrefonction
+from fonction.notre_code import Glouton_optimise
 from fonction.Brute_Force import brute_force
 from fonction.heuristique import heuristique
 from time import time
@@ -12,13 +12,13 @@ def heurist():
     print("FIN DE LA FONCTION HEURISTIQUE. ")
 
 def testnotrefonction():
-     print("Notre fonction : -----///*/**")
+     print("====== Glouton optimisé ======")
      objet = Objets()
-     sac = notrefonction(objet.all, 60)
+     sac = Glouton_optimise(objet.all, 60)
+
      print(sac)
 
-if __name__ == "__main__":
-
+def testbrute_force():
     sac = Objets()
     for i in sac.getall():
         print(i)
@@ -27,12 +27,13 @@ if __name__ == "__main__":
 
     utilite_max, meilleure_selection = brute_force(sac.all, capacite_sac)
 
-    # 4. Affichage du résultat
-    print("\n=== RÉSULTAT OPTIMAL ===")
-    print(f"Utilité totale : {round(utilite_max,3)}")
+    # Affichage du résultat
+    print("====== Brute force ======")
+    print(f"Utilité totale : {round(utilite_max, 3)}")
     print("Objets à emporter :")
     for obj in meilleure_selection:
         print(f" - {obj.nom} ({obj.masse} g, utilité: {obj.utilite})")
 
-
-
+if __name__ == "__main__":
+    testbrute_force()
+    testnotrefonction()
