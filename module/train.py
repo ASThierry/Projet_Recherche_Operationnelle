@@ -4,6 +4,7 @@ from module.conteneur import Conteneur
 class Train:
     def __init__(self):
         self.conteneurs : [Conteneur]= []
+        
 
 
     def __str__(self):
@@ -14,3 +15,6 @@ class Train:
             retour += conteneur.__str__() + "\n"
             i+=1
         return retour
+
+    def ajouter(self,conteneur: Conteneur):
+        self.conteneur.append(conteneur)
