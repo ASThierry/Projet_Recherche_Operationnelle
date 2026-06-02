@@ -9,14 +9,14 @@ def testheuristique():
     print("FONCTION HEURISTIQUE : ")
     sac = heuristique(objets.all,60)
     print(sac)
-    print("\n\n")
+    print("\n")
 
 def testGlouton_optimise():
      print("====== Glouton optimisé ======")
      objet = Objets()
      sac = Glouton_optimise(objet.all, 60)
      print(sac)
-     print("\n\n")
+     print("\n")
 
 def testbrute_force():
     sac = Objets()
@@ -31,7 +31,7 @@ def testbrute_force():
     print("Objets à emporter :")
     for obj in meilleure_selection:
         print(f" - {obj.nom} ({obj.masse} g, utilité: {obj.utilite})")
-    print("\n\n")
+    print("\n")
 
 if __name__ == "__main__":
     testbrute_force()
