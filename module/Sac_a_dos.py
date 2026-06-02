@@ -18,7 +18,7 @@ class Sac:
             print("Le sac est plein.")
     
     def __str__(self):
-        retour = ""
+        retour = "<======= Contenue du sac =======>"
         for i in self.contenus:
             retour += i.__str__() + "\n"
         return retour
