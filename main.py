@@ -1,7 +1,15 @@
 from module.Objets import Objets,Objet
 from fonction.notre_code import notrefonction
 from fonction.Brute_Force import brute_force
+from fonction.heuristique import heuristique
 from time import time
+
+def heurist():
+    objets = Objets()
+    print("FONCTION HEURISTIQUE : ")
+    sac = heuristique(objets.all,60)
+    print(sac)
+    print("FIN DE LA FONCTION HEURISTIQUE. ")
 
 def testnotrefonction():
      print("Notre fonction : -----///*/**")
@@ -26,5 +34,5 @@ if __name__ == "__main__":
     for obj in meilleure_selection:
         print(f" - {obj.nom} ({obj.masse} g, utilité: {obj.utilite})")
 
-    testnotrefonction()
+
 
