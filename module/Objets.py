@@ -1,11 +1,11 @@
 import os
 import pandas as pd
-from Objet import Objet
+from module.Objet import Objet
 
 class Objets:
     def __init__(self):
         self.all : [Objet] = []
-        self.__lire_excel("../data/velo.xlsx")
+        self.__lire_excel("data/velo.xlsx")
 
     def __lire_excel(self,chemin_fichier : str):
         """
@@ -44,3 +44,11 @@ class Objets:
         for i in self.all:
             retour += i.__str__() + "\n"
         return retour
+
+    def affichage_sac(self):
+        print("======   Le sac contient   =====")
+        for i in self.all:
+            if i.pris == 1 :
+                print(i)
+    def getall(self):
+        return self.all
