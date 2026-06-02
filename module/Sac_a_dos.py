@@ -23,6 +23,7 @@ class Sac:
         for i in self.contenus:
             retour += i.__str__() + "\n"
         return retour
+
     def utilite_total(self):
         total = 0
         for i in self.contenus:

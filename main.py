@@ -4,24 +4,22 @@ from fonction.Brute_Force import brute_force
 from fonction.heuristique import heuristique
 from time import time
 
-def heurist():
+def testheuristique():
     objets = Objets()
     print("FONCTION HEURISTIQUE : ")
     sac = heuristique(objets.all,60)
     print(sac)
-    print("FIN DE LA FONCTION HEURISTIQUE. ")
+    print("\n\n")
 
-def testnotrefonction():
+def testGlouton_optimise():
      print("====== Glouton optimisé ======")
      objet = Objets()
      sac = Glouton_optimise(objet.all, 60)
-
      print(sac)
+     print("\n\n")
 
 def testbrute_force():
     sac = Objets()
-    for i in sac.getall():
-        print(i)
 
     capacite_sac = 60
 
@@ -33,7 +31,9 @@ def testbrute_force():
     print("Objets à emporter :")
     for obj in meilleure_selection:
         print(f" - {obj.nom} ({obj.masse} g, utilité: {obj.utilite})")
+    print("\n\n")
 
 if __name__ == "__main__":
     testbrute_force()
-    testnotrefonction()
+    testGlouton_optimise()
+    testheuristique()

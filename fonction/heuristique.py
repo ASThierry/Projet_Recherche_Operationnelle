@@ -1,7 +1,9 @@
 from module.Objets import Objets
 from module.Sac_a_dos import Sac
+from fonction.decorator import *
 import copy
 
+@chronometrer
 def heuristique(liste_objets, capacite_sac):
     #initialiser le sac avec sa capacité maximale
     mon_sac = Sac(capacite_sac) 
