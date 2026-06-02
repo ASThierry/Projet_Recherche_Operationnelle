@@ -1,8 +1,10 @@
 from module.Objets import Objets
 from module.Sac_a_dos import Sac
 import copy
+from fonction.decorator import *
 
-def notrefonction(liste_objets, capacite_sac):
+@chronometrer
+def Glouton_optimise(liste_objets, capacite_sac):
     #initialiser le sac avec sa capacité maximale
     mon_sac = Sac(capacite_sac) 
     masse_restante = capacite_sac

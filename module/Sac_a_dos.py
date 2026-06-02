@@ -18,7 +18,13 @@ class Sac:
             print("Le sac est plein.")
     
     def __str__(self):
-        retour = "<======= Contenue du sac =======>"
+        retour = "<======= Contenue du sac =======>\n"
+        retour += f"Utilité totale : {round(self.utilite_total(),3)}\n"
         for i in self.contenus:
             retour += i.__str__() + "\n"
         return retour
+    def utilite_total(self):
+        total = 0
+        for i in self.contenus:
+            total += i.utilite
+        return total
