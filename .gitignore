@@ -1,1 +1,8 @@
 .pyc
+
+fonction/__pycache__/*
+module/__pycache__/*
+
+data/~$velo.xlsx
+
+
