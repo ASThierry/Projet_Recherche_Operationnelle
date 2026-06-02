@@ -1,6 +1,13 @@
 from module.Objets import Objets,Objet
+from fonction.notre_code import notrefonction
 from fonction.Brute_Force import brute_force
 from time import time
+
+def testnotrefonction():
+     print("Notre fonction : -----///*/**")
+     objet = Objets()
+     sac = notrefonction(objet.all, 60)
+     print(sac)
 
 if __name__ == "__main__":
 
@@ -19,5 +26,5 @@ if __name__ == "__main__":
     for obj in meilleure_selection:
         print(f" - {obj.nom} ({obj.masse} g, utilité: {obj.utilite})")
 
-
+    testnotrefonction()
 

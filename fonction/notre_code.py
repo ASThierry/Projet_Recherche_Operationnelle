@@ -9,8 +9,6 @@ def notrefonction(liste_objets, capacite_sac):
     
     # trie les objets par rapport à leur ratio utilité/masse 
     objets_tries = sorted(liste_objets, key=lambda x: x.ratio, reverse=True)
-    for i in objets_tries :
-        print(i)
     # Parcoutrir nos objet
     for obj in objets_tries:
         # Si le sac est déjà plein, on arrête tout immédiatement
