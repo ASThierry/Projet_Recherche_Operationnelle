@@ -30,7 +30,7 @@ class Train:
             print(f"--- Wagon n° {i+1}")
             volume += self.conteneurs[i].getVolumeRestante()
             self.conteneurs[i].affichage()
-        print(f"<===== il reste dans le train : {volume} m² de libre =====>")
+        print(f"<===== il reste dans le train : {volume} m³ de libre =====>")
 
     def afficher_graphique_3d(self):
         """
