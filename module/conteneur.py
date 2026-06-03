@@ -18,5 +18,21 @@ class Conteneur:
     def addmarchandise(self, marchandise: Marchandise):
         self.contenu.append(marchandise)
 
+    def getVolume(self):
+        return self.longueur * self.largeur * self.hauteur
+
+    def getVolumeOccupe(self):
+        volume = 0
+        for contenu in self.contenu:
+            volume += contenu.getVolume()
+        return volume
+
+    def getVolumeRestante(self):
+        return self.getVolume() - self.getVolumeOccupe()
+
+    def affichage(self):
+        print(f"Contient {len(self.contenu)} marchandises")
+        print(f"Volume restant : {self.getVolumeRestante()}")
+
 
 

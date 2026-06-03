@@ -17,4 +17,16 @@ class Train:
         return retour
 
     def ajouter(self,conteneur: Conteneur):
-        self.conteneur.append(conteneur)
+        self.conteneurs.append(conteneur)
+
+    def affichage_reduit(self):
+        print("<===== Le train ( affichage reduit )======>")
+        print(f"Le nombre de wagon est {len(self.conteneurs)}")
+        volume : int = 0
+        for i in range(len(self.conteneurs)):
+            print(f"--- Wagon n° {i+1}")
+            volume += self.conteneurs[i].getVolumeRestante()
+            self.conteneurs[i].affichage()
+        print(f"<===== il reste dans le train : {volume} m² de libre =====>")
+
+

@@ -2,6 +2,7 @@ from fonction.decorator import *
 from module.marchandise import Marchandise
 from module.conteneur import Conteneur
 from module.train import Train
+from fonction.Offline3d import obtenir_rotations
 
 # Structure pour traquer les points d'ancrage en 3D
 class ExtremePoint:
@@ -21,7 +22,7 @@ def extremePoints3dOffline(marchandises_obj):
     # (Idéal pour compacter en 3D : Longueur * Largeur * Hauteur)
     marchandises_triees = sorted(
         marchandises_obj.all, 
-        key=lambda m: m.longueur * m.largeur * m.hauteur, 
+        key=lambda m: m.getVolume(),
         reverse=True
     )
 
@@ -101,7 +102,7 @@ def extremePoints3dOffline(marchandises_obj):
     return train
 
 @chronometrer
-def extremePoints3dOneline(marchandises_obj):
+def extremePoints3dOnline(marchandises_obj):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste de points extrêmes disponibles
     liste_extreme_points = {}
