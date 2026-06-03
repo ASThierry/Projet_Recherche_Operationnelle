@@ -48,9 +48,17 @@ def testextremePoint3d():
     train.affichage_reduit()
 
 
+def testextremePointonline3d():
+    marchandises = Marchandises()
+    train = extremePoints3dOnline(marchandises)
+    #print(train)
+    train.affichage_reduit()
+
+
 if __name__ == '__main__':
     #testOffline2d()
-    #testextremePoint3d()
+    # testextremePoint3d()
+    testextremePointonline3d()
     #testOffline2d()
     #testOnline2d()
     testOffline3d()

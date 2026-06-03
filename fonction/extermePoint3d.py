@@ -11,15 +11,22 @@ class ExtremePoint:
         self.y = y
         self.z = z
 
+
+def get_orientations(l, w, h):
+        return list(set([
+            (l, w, h), (l, h, w),
+            (w, l, h), (w, h, l),
+            (h, l, w), (h, w, l)
+        ]))
+
+
 @chronometrer
 def extremePoints3dOffline(marchandises_obj):
-    # je cherche aussi a faire des rotation et optiniser le code pour mettre le plus de marchandire sans les wagon avec des rotatin
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste de points extrêmes disponibles
     liste_extreme_points = {}
 
     # Tri hors-ligne (Offline) : Du plus grand volume au plus petit 
-    # (Idéal pour compacter en 3D : Longueur * Largeur * Hauteur)
     marchandises_triees = sorted(
         marchandises_obj.all, 
         key=lambda m: m.getVolume(),
@@ -28,164 +35,179 @@ def extremePoints3dOffline(marchandises_obj):
 
     for marchandise in marchandises_triees:
         place = False
+        # Récupérer toutes les rotations possibles pour cette marchandise
+        orientations = get_orientations(marchandise.longueur, marchandise.largeur, marchandise.hauteur)
 
         # Chercher dans les conteneurs existants
         for conteneur in train.conteneurs:
             
-            # Tri des points pour faire du Best-Fit (Priorité au sol Z, puis fond Y, puis X)
-            liste_extreme_points[conteneur] = sorted(
-                liste_extreme_points[conteneur], 
-                key=lambda p: (p.z, p.y, p.x)
-            )
+            # OPTIMISATION : On trie la liste des points une seule fois avant de tester les points pour cette marchandise
+            liste_extreme_points[conteneur].sort(key=lambda p: (p.z, p.y, p.x))
 
-            # Chercher le premier point extrême disponible (First Fit parmi les triés)
+            # Chercher le premier point extrême et la première orientation qui valide le placement
             for i, pt in enumerate(liste_extreme_points[conteneur]):
-                
-                #  Vérifier si la marchandise ne dépasse pas du conteneur
-                if (pt.x + marchandise.longueur <= conteneur.longueur and
-                    pt.y + marchandise.largeur <= conteneur.largeur and
-                    pt.z + marchandise.hauteur <= conteneur.hauteur):
+                for dim_x, dim_y, dim_z in orientations:
                     
-                    # Vérifier s'il n'y a pas de collision avec les objets déjà dedans
-                    collision = False
-                    for autre in conteneur.contenu:
-                        # Si ça se chevauche sur les 3 axes en même temps -> Collision
-                        if not (pt.x + marchandise.longueur <= autre.x or pt.x >= autre.x + autre.longueur or
-                                pt.y + marchandise.largeur <= autre.y or pt.y >= autre.y + autre.largeur or
-                                pt.z + marchandise.hauteur <= autre.z or pt.z >= autre.z + autre.hauteur):
-                            collision = True
-                            break
-                    
-                    # Si le point est valide et sans collision, on pose !
-                    if not collision:
-                        # Assigner la position 3D finale à la marchandise
-                        marchandise.x = pt.x
-                        marchandise.y = pt.y
-                        marchandise.z = pt.z
+                    # Vérifier si la marchandise ainsi orientée ne dépasse pas du conteneur
+                    if (pt.x + dim_x <= conteneur.longueur and
+                        pt.y + dim_y <= conteneur.largeur and
+                        pt.z + dim_z <= conteneur.hauteur):
+                        
+                        # Vérifier s'il n'y a pas de collision avec les objets déjà dedans
+                        collision = False
+                        for autre in conteneur.contenu:
+                            # CRUCIAL : On compare avec les dimensions orientées (d_x, d_y, d_z) de l'autre objet
+                            if not (pt.x + dim_x <= autre.x or pt.x >= autre.x + autre.d_x or
+                                    pt.y + dim_y <= autre.y or pt.y >= autre.y + autre.d_y or
+                                    pt.z + dim_z <= autre.z or pt.z >= autre.z + autre.d_z):
+                                collision = True
+                                break
+                        
+                        # Si le point et l'orientation sont valides, on pose !
+                        if not collision:
+                            marchandise.x = pt.x
+                            marchandise.y = pt.y
+                            marchandise.z = pt.z
+                            
+                            # On sauvegarde les dimensions réelles occupées sur les axes
+                            marchandise.d_x = dim_x
+                            marchandise.d_y = dim_y
+                            marchandise.d_z = dim_z
+                            
+                            conteneur.contenu.append(marchandise)
 
-                        # Ajouter au conteneur
-                        conteneur.contenu.append(marchandise)
+                            # Génération des 3 nouveaux points extrêmes (projections)
+                            pt_x = ExtremePoint(pt.x + dim_x, pt.y, pt.z)
+                            pt_y = ExtremePoint(pt.x, pt.y + dim_y, pt.z)
+                            pt_z = ExtremePoint(pt.x, pt.y, pt.z + dim_z)
 
-                        # Génération des 3 nouveaux points extrêmes (projections)
-                        pt_x = ExtremePoint(pt.x + marchandise.longueur, pt.y, pt.z)
-                        pt_y = ExtremePoint(pt.x, pt.y + marchandise.largeur, pt.z)
-                        pt_z = ExtremePoint(pt.x, pt.y, pt.z + marchandise.hauteur)
+                            # Remplacer l'ancien point par les 3 nouveaux
+                            liste_extreme_points[conteneur].pop(i)
+                            liste_extreme_points[conteneur].extend([pt_x, pt_y, pt_z])
 
-                        # Remplacer l'ancien point par les 3 nouveaux
-                        liste_extreme_points[conteneur].pop(i)
-                        liste_extreme_points[conteneur].extend([pt_x, pt_y, pt_z])
-
-                        place = True
-                        break
-
+                            place = True
+                            break # Quitter la boucle des orientations
+                if place:
+                    break # Quitter la boucle des points
             if place:
-                break # On passe à la marchandise suivante
+                break # Passer à la marchandise suivante
 
         # Si aucun espace trouvé dans les conteneurs existants, on en ouvre un nouveau
         if not place:
             nouveau_conteneur = Conteneur()
             train.conteneurs.append(nouveau_conteneur)
 
-            # On place l'objet à l'origine du nouveau conteneur (0, 0, 0)
+            # On prend la première orientation par défaut pour le coin (0,0,0)
+            dim_x, dim_y, dim_z = orientations[0]
+
             marchandise.x = 0
             marchandise.y = 0
             marchandise.z = 0
+            marchandise.d_x = dim_x
+            marchandise.d_y = dim_y
+            marchandise.d_z = dim_z
+            
             nouveau_conteneur.contenu.append(marchandise)
 
             # Génération des 3 premiers points extrêmes autour de cette première marchandise
-            pt_x = ExtremePoint(marchandise.longueur, 0, 0)
-            pt_y = ExtremePoint(0, marchandise.largeur, 0)
-            pt_z = ExtremePoint(0, 0, marchandise.hauteur)
+            pt_x = ExtremePoint(dim_x, 0, 0)
+            pt_y = ExtremePoint(0, dim_y, 0)
+            pt_z = ExtremePoint(0, 0, dim_z)
 
             liste_extreme_points[nouveau_conteneur] = [pt_x, pt_y, pt_z]
 
     return train
 
-@chronometrer
+
 def extremePoints3dOnline(marchandises_obj):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste de points extrêmes disponibles
     liste_extreme_points = {}
 
     # Tri hors-ligne (Offline) : Du plus grand volume au plus petit 
-    # (Idéal pour compacter en 3D : Longueur * Largeur * Hauteur)
-    marchandises_triees =marchandises_obj.all
-       
+    marchandises_triees = marchandises_obj.all
 
     for marchandise in marchandises_triees:
         place = False
+        # Récupérer toutes les rotations possibles pour cette marchandise
+        orientations = get_orientations(marchandise.longueur, marchandise.largeur, marchandise.hauteur)
 
         # Chercher dans les conteneurs existants
         for conteneur in train.conteneurs:
             
-            # Tri des points pour faire du Best-Fit (Priorité au sol Z, puis fond Y, puis X)
-            liste_extreme_points[conteneur] = sorted(
-                liste_extreme_points[conteneur], 
-                key=lambda p: (p.z, p.y, p.x)
-            )
+            # OPTIMISATION : On trie la liste des points une seule fois avant de tester les points pour cette marchandise
+            liste_extreme_points[conteneur].sort(key=lambda p: (p.z, p.y, p.x))
 
-            # Chercher le premier point extrême disponible (First Fit parmi les triés)
+            # Chercher le premier point extrême et la première orientation qui valide le placement
             for i, pt in enumerate(liste_extreme_points[conteneur]):
-                
-                #  Vérifier si la marchandise ne dépasse pas du conteneur
-                if (pt.x + marchandise.longueur <= conteneur.longueur and
-                    pt.y + marchandise.largeur <= conteneur.largeur and
-                    pt.z + marchandise.hauteur <= conteneur.hauteur):
+                for dim_x, dim_y, dim_z in orientations:
                     
-                    # Vérifier s'il n'y a pas de collision avec les objets déjà dedans
-                    collision = False
-                    for autre in conteneur.contenu:
-                        # Si ça se chevauche sur les 3 axes en même temps -> Collision
-                        if not (pt.x + marchandise.longueur <= autre.x or pt.x >= autre.x + autre.longueur or
-                                pt.y + marchandise.largeur <= autre.y or pt.y >= autre.y + autre.largeur or
-                                pt.z + marchandise.hauteur <= autre.z or pt.z >= autre.z + autre.hauteur):
-                            collision = True
-                            break
-                    
-                    # Si le point est valide et sans collision, on pose !
-                    if not collision:
-                        # Assigner la position 3D finale à la marchandise
-                        marchandise.x = pt.x
-                        marchandise.y = pt.y
-                        marchandise.z = pt.z
+                    # Vérifier si la marchandise ainsi orientée ne dépasse pas du conteneur
+                    if (pt.x + dim_x <= conteneur.longueur and
+                        pt.y + dim_y <= conteneur.largeur and
+                        pt.z + dim_z <= conteneur.hauteur):
                         
-                        # Ajouter au conteneur
-                        conteneur.contenu.append(marchandise)
+                        # Vérifier s'il n'y a pas de collision avec les objets déjà dedans
+                        collision = False
+                        for autre in conteneur.contenu:
+                            # CRUCIAL : On compare avec les dimensions orientées (d_x, d_y, d_z) de l'autre objet
+                            if not (pt.x + dim_x <= autre.x or pt.x >= autre.x + autre.d_x or
+                                    pt.y + dim_y <= autre.y or pt.y >= autre.y + autre.d_y or
+                                    pt.z + dim_z <= autre.z or pt.z >= autre.z + autre.d_z):
+                                collision = True
+                                break
+                        
+                        # Si le point et l'orientation sont valides, on pose !
+                        if not collision:
+                            marchandise.x = pt.x
+                            marchandise.y = pt.y
+                            marchandise.z = pt.z
+                            
+                            # On sauvegarde les dimensions réelles occupées sur les axes
+                            marchandise.d_x = dim_x
+                            marchandise.d_y = dim_y
+                            marchandise.d_z = dim_z
+                            
+                            conteneur.contenu.append(marchandise)
 
-                        # Génération des 3 nouveaux points extrêmes (projections)
-                        pt_x = ExtremePoint(pt.x + marchandise.longueur, pt.y, pt.z)
-                        pt_y = ExtremePoint(pt.x, pt.y + marchandise.largeur, pt.z)
-                        pt_z = ExtremePoint(pt.x, pt.y, pt.z + marchandise.hauteur)
+                            # Génération des 3 nouveaux points extrêmes (projections)
+                            pt_x = ExtremePoint(pt.x + dim_x, pt.y, pt.z)
+                            pt_y = ExtremePoint(pt.x, pt.y + dim_y, pt.z)
+                            pt_z = ExtremePoint(pt.x, pt.y, pt.z + dim_z)
 
-                        # Remplacer l'ancien point par les 3 nouveaux
-                        liste_extreme_points[conteneur].pop(i)
-                        liste_extreme_points[conteneur].extend([pt_x, pt_y, pt_z])
+                            # Remplacer l'ancien point par les 3 nouveaux
+                            liste_extreme_points[conteneur].pop(i)
+                            liste_extreme_points[conteneur].extend([pt_x, pt_y, pt_z])
 
-                        place = True
-                        break
-
+                            place = True
+                            break # Quitter la boucle des orientations
+                if place:
+                    break # Quitter la boucle des points
             if place:
-                break # marchandise suivante
+                break # Passer à la marchandise suivante
 
         # Si aucun espace trouvé dans les conteneurs existants, on en ouvre un nouveau
         if not place:
             nouveau_conteneur = Conteneur()
             train.conteneurs.append(nouveau_conteneur)
 
-            # On place l'objet à l'origine du nouveau conteneur (0, 0, 0)
+            # On prend la première orientation par défaut pour le coin (0,0,0)
+            dim_x, dim_y, dim_z = orientations[0]
+
             marchandise.x = 0
             marchandise.y = 0
             marchandise.z = 0
+            marchandise.d_x = dim_x
+            marchandise.d_y = dim_y
+            marchandise.d_z = dim_z
+            
             nouveau_conteneur.contenu.append(marchandise)
 
             # Génération des 3 premiers points extrêmes autour de cette première marchandise
-            pt_x = ExtremePoint(marchandise.longueur, 0, 0)
-            pt_y = ExtremePoint(0, marchandise.largeur, 0)
-            pt_z = ExtremePoint(0, 0, marchandise.hauteur)
+            pt_x = ExtremePoint(dim_x, 0, 0)
+            pt_y = ExtremePoint(0, dim_y, 0)
+            pt_z = ExtremePoint(0, 0, dim_z)
 
             liste_extreme_points[nouveau_conteneur] = [pt_x, pt_y, pt_z]
 
     return train
-
-
-# je cherche aussi a faire des rotation et optiniser le code pour mettre le plus de marchandire sans les wagon avec des rotatin
