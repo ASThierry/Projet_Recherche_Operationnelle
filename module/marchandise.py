@@ -7,6 +7,9 @@ class Marchandise:
         self.longueur = longueur
         self.largeur = largeur
         self.hauteur = hauteur
+        self.x=0
+        self.y=0
+        self.z=0
 
 
     def getlongeur(self):

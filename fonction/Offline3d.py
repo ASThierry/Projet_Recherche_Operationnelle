@@ -121,12 +121,17 @@ def guillotine3dOffline_split(marchandises_obj):
                             meilleure_orientation = (r_long, r_large, r_haut)
                         place = True
         if place:
+            marchandise.x=meilleur_espace.x
+            marchandise.y=meilleur_espace.y
+            marchandise.z=meilleur_espace.z
             espaces_libres[meilleur_conteneur].pop(meilleur_indice)
             meilleur_conteneur.contenu.append(marchandise)
             espaceopti = splitheuristique(meilleur_espace, marchandise)
             espaces_libres[meilleur_conteneur].extend(espaceopti)
 
             marchandise.longueur, marchandise.largeur, marchandise.hauteur = meilleure_orientation
+
+
 
         # Si aucun espace trouvé, on ouvre un nouveau conteneur
         else:

@@ -38,6 +38,7 @@ def testOffline3d():
     train : Train = guillotine3dOffline_split(marchandises)
     #print(train)
     train.affichage_reduit()
+    train.afficher_graphique_3d()
 
 
 def testextremePoint3d():
@@ -49,7 +50,7 @@ def testextremePoint3d():
 
 if __name__ == '__main__':
     #testOffline2d()
-    testextremePoint3d()
+    #testextremePoint3d()
     #testOffline2d()
     #testOnline2d()
-    #testOffline3d()
+    testOffline3d()
