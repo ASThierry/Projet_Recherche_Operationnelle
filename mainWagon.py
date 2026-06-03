@@ -94,12 +94,12 @@ def testOffline3d():
     train.afficher_graphique_3d()
 
 
-def testextremePointOffline3d():
+def testExtremePointOffline3d():
     marchandises = Marchandises()
     train = extremePoints3dOffline(marchandises)
     #print(train)
     train.affichage_reduit()
-    train.afficher_graphique_3d()
+    #train.afficher_graphique_3d()
 
 
 def testExtremePointOnline3d():
@@ -112,11 +112,11 @@ def testExtremePointOnline3d():
 
 if __name__ == '__main__':
     #testOffline2d()
-    #testextremePointOffline3d()
     #testExtremePointOnline3d()
+    testExtremePointOffline3d()
     #testOffline2d()
     #testOnline2d()
     #testOffline3d()
-    train = trouver_le_train_parfait()
-    train.affichage_reduit()
+    #train = trouver_le_train_parfait()
+    #train.affichage_reduit()
     #train.afficher_graphique_3d()

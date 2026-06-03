@@ -1,7 +1,7 @@
 
 
 class Marchandise:
-    def __init__(self, numero,designation,longueur,largeur, hauteur):
+    def __init__(self, numero,designation,longueur,largeur, hauteur,retournable :int):
         self.numero = numero
         self.designation = designation
         self.longueur = longueur
@@ -10,6 +10,7 @@ class Marchandise:
         self.x=0
         self.y=0
         self.z=0
+        self.retournable = retournable
 
 
     def getlongeur(self):

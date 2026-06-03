@@ -2,7 +2,7 @@ import os
 import pandas as pd
 from module.marchandise import Marchandise
 
-class Marchandises():
+class Marchandises:
     def __init__(self):
         self.all : [Marchandise] = []
         self.__lire_excel("data/marchandises.xlsx")
@@ -30,7 +30,7 @@ class Marchandises():
 
             df.head()
             for i in range(len(df)):
-                temp = Marchandise(df["Numero"][i], df["Designation"][i], df["Longueur"][i], df["Largeur"][i], df["Hauteur"][i])
+                temp = Marchandise(df["Numero"][i], df["Designation"][i], df["Longueur"][i], df["Largeur"][i], df["Hauteur"][i],df["Retournable"][i])
                 self.all.append(temp)
 
         except ValueError as ve:

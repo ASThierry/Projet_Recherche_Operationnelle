@@ -15,16 +15,20 @@ class EspaceLibre3d:
     def getVolume(self):
         return self.longueur * self.largeur * self.hauteur
 
-def obtenir_rotations(m):
+def obtenir_rotations(m : Marchandise):
     """Retourne les 6 permutations (longueur, largeur, hauteur) possibles pour une marchandise"""
-    perms = [
-        (m.longueur, m.largeur, m.hauteur),
-        (m.longueur, m.hauteur, m.largeur),
-        (m.largeur, m.longueur, m.hauteur),
-        (m.largeur, m.hauteur, m.longueur),
-        (m.hauteur, m.longueur, m.largeur),
-        (m.hauteur, m.largeur, m.longueur)
-    ]
+    perms=[]
+    if m.retournable == 1:
+        perms = [
+            (m.longueur, m.largeur, m.hauteur),
+            (m.longueur, m.hauteur, m.largeur),
+            (m.largeur, m.longueur, m.hauteur),
+            (m.largeur, m.hauteur, m.longueur),
+            (m.hauteur, m.longueur, m.largeur),
+            (m.hauteur, m.largeur, m.longueur)
+        ]
+    else :
+        perm = [(m.longueur, m.largeur, m.hauteur)]
     # On supprime les doublons (si la boîte est un cube parfait par exemple)
     return list(set(perms))
 
@@ -79,6 +83,11 @@ def splitheuristique(espace : EspaceLibre3d, marchandise : Marchandise):
 
 @chronometrer
 def guillotine3dOffline_split(marchandises_obj):
+    """
+
+    :param marchandises_obj: list(Marchandise)
+    :return: Train()
+    """
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste d'espaces libres
     espaces_libres = {}
@@ -155,6 +164,12 @@ def guillotine3dOffline_split(marchandises_obj):
 
 @chronometrer
 def guillotine3dOffline(marchandises_obj):
+    """
+
+    :param marchandises_obj:
+    :return: Train()
+    Le guillotine sans optimisation de base pour le 3d
+    """
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste d'espaces libres
     espaces_libres = {}
