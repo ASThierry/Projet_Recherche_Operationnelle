@@ -8,7 +8,7 @@ class Train:
 
     def __str__(self):
         retour : str ="<====== Contenue du train ======>\n"
-        i : int = 0
+        i : int = 1
         for conteneur in self.conteneurs:
             retour += f"Le conteneur {i} contient :\n"
             retour += conteneur.__str__() + "\n"
