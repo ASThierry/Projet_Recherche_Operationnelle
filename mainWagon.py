@@ -24,9 +24,7 @@ def testOffline3d():
     train : Train = guillotine3dOffline_split(marchandises)
     print(train)
 
-
-
-def testextermePoint3doneline():
+if __name__ == '__main__':
     marchandises = Marchandises()
     train = extremePoints3dOneline(marchandises)
     print(train)

@@ -6,6 +6,7 @@ class Conteneur:
         self.longueur = 11.583
         self.largeur = 2.294
         self.hauteur = 2.569
+        self.rest =11.583
         self.contenu : [Marchandise]= []
 
     def __str__(self):
@@ -13,7 +14,9 @@ class Conteneur:
         for contenu in self.contenu:
             retour += contenu.__str__() + "\n"
         return retour
-
+    
+    def addmarchandise(self, marchandise: Marchandise):
+        self.contenu.append(marchandise)
 
 
 
