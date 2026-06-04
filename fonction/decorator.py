@@ -2,9 +2,11 @@ import time
 from functools import wraps
 import os
 
-
+#==> Mathis et Mr Gamblin
+#Récupération du code fait en design Pattern
 def chronometrer(fonction):
-    """Décorateur qui mesure et affiche le temps d'exécution d'une fonction."""
+    """Décorateur qui mesure et affiche le temps d'exécution d'une fonction.
+    et qui enregistre le temps dans un fichier"""
 
     @wraps(fonction)
     def wrapper(*args, **kwargs):
@@ -19,7 +21,7 @@ def chronometrer(fonction):
 
         #On calcule et affiche la différence
         temps_ecoule = fin - debut
-        #print(f"L'exécution de \033[92m'{fonction.__name__}'\033[0m a pris {temps_ecoule:.8f} secondes.")
+        print(f"L'exécution de \033[92m'{fonction.__name__}'\033[0m a pris {temps_ecoule:.8f} secondes.")
 
         dossier_logs = "stats_temps"
         os.makedirs(dossier_logs, exist_ok=True)

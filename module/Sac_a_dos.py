@@ -1,8 +1,10 @@
+#==> Thierry
 class Sac:
     def __init__(self, poids):
         self.poids = poids
         self.contenus = []
         self.poids_restant = poids
+
 
     def ajouter_element(self, element):
         if element is None:
@@ -15,7 +17,9 @@ class Sac:
         self.poids_restant -= element.masse
 
         if self.poids_restant == 0:
-            print("Le sac est plein.")
+            #print("Le sac est plein.")
+            pass
+
     
     def __str__(self):
         retour = "<======= Contenue du sac =======>\n"
@@ -23,6 +27,7 @@ class Sac:
         for i in self.contenus:
             retour += i.__str__() + "\n"
         return retour
+
 
     def utilite_total(self):
         total = 0

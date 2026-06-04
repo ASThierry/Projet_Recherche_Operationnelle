@@ -1,8 +1,6 @@
 import os
 
-from fonction.bestfit1d import bestfit1doneline
-
-
+# ==> Mathis et Gemini
 def calculer_moyenne_temps(nom_de_la_fonction):
     """Lit le fichier de logs d'une fonction et calcule la moyenne de son temps d'exécution."""
     chemin_fichier = f"../stats_temps/{nom_de_la_fonction}.txt"
@@ -27,16 +25,24 @@ def calculer_moyenne_temps(nom_de_la_fonction):
     print(f"Temps moyen d'exécution   : {moyenne:.8f} secondes.\n")
 
     return moyenne
+def Calculer_moyenne_wagons():
+    calculer_moyenne_temps("bestfit1doneline")
+    calculer_moyenne_temps("bestfit1doffline")
+    calculer_moyenne_temps("extremePoints3dOnline")
+    calculer_moyenne_temps("extremePoints3dOffline")
+    calculer_moyenne_temps("firstfit1doffline")
+    calculer_moyenne_temps("firstfit1doneline")
+    calculer_moyenne_temps("guillotine2dOnline")
+    calculer_moyenne_temps("guillotine2dOffline")
+    calculer_moyenne_temps("guillotine3dOffline")
+    calculer_moyenne_temps("guillotine3dOnline")
+    calculer_moyenne_temps("guillotine3dOffline_opti")
+    calculer_moyenne_temps("guillotine3dOnline_opti")
 
-calculer_moyenne_temps("bestfit1doneline")
-calculer_moyenne_temps("bestfit1doffline")
-calculer_moyenne_temps("extremePoints3dOnline")
-calculer_moyenne_temps("extremePoints3dOffline")
-calculer_moyenne_temps("firstfit1doffline")
-calculer_moyenne_temps("firstfit1doneline")
-calculer_moyenne_temps("guillotine2dOnline")
-calculer_moyenne_temps("guillotine2dOffline")
-calculer_moyenne_temps("guillotine3dOffline")
-calculer_moyenne_temps("guillotine3dOnline")
-calculer_moyenne_temps("guillotine3dOffline_opti")
-calculer_moyenne_temps("guillotine3dOnline_opti")
+def calculer_moyenne_sac():
+    calculer_moyenne_temps("heuristique")
+    calculer_moyenne_temps("Glouton_optimise")
+    calculer_moyenne_temps("brute_force")
+
+if __name__ == "__main__":
+    calculer_moyenne_sac()

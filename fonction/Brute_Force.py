@@ -1,7 +1,7 @@
 from module.Objets import Objets,Objet
 from fonction.decorator import *
 
-
+#==> Mathis
 @chronometrer
 def brute_force(liste_objets, capacite_restante):
     return brute_force_recursif(liste_objets, capacite_restante)

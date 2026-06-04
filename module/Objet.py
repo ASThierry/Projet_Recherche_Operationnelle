@@ -1,5 +1,5 @@
 
-
+# ==> Mathis et Thierry
 class Objet:
     def __init__(self,nom : str , masse : float, utilite : float):
         self.nom = nom

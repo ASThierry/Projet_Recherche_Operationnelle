@@ -65,7 +65,7 @@ def testExtremePointOffline3d():
     train = extremePoints3dOffline(marchandises)
     #print(train)
     train.affichage_reduit()
-    #train.afficher_graphique_3d()
+    train.afficher_graphique_3d()
     print("\n")
 
 
@@ -172,7 +172,7 @@ def CalculeMoyenneTemps(iteration : int = 100):
 if __name__ == '__main__':
     #testOffline2d()
     #testExtremePointOnline3d()
-    #testExtremePointOffline3d()
+    testExtremePointOffline3d()
     #testOffline2d()
     #testOnline2d()
     #testGuillotineOffline3d()
@@ -180,7 +180,8 @@ if __name__ == '__main__':
     #train = trouver_le_train_parfait()
     #train.affichage_reduit()
     #train.afficher_graphique_3d()
-    CalculeMoyenneTemps()
+    #CalculeMoyenneTemps()
+
 def trouver_le_train_parfait(iterations=5000):
     random.seed(123)
     marchandises_obj = Marchandises()

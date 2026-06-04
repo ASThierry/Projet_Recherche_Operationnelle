@@ -6,9 +6,9 @@ from module.train import Train
 # Structure pour traquer les espaces vides
 class EspaceLibre:
     def __init__(self, x, y, longueur, largeur):
+        self.longueur = longueur
         self.x = x
         self.y = y
-        self.longueur = longueur
         self.largeur = largeur
 
     def contient(self, autre_espace):
