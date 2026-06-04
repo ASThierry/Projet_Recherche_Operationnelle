@@ -1,3 +1,4 @@
+from fonction.decorator import chronometrer
 from module.marchandises import Marchandises
 from module.train import Train
 from module.conteneur import Conteneur
@@ -8,6 +9,7 @@ from module.conteneur import Conteneur
     3. Placer la marchandise dans le premier wagon qui a assez d'espace disponible.
     4. Si aucun wagon existant ne convient, on crée un nouveau wagon.
 """
+@chronometrer
 def firstfit1doffline(marchandises, train): 
     # Trier les marchandises
     marchandises_trie = sorted(marchandises.all, key=lambda x: x.longueur, reverse=True)
@@ -35,7 +37,7 @@ def firstfit1doffline(marchandises, train):
             train.conteneurs.append(nouveau_wagon)      
             
     
-
+@chronometrer
 def firstfit1doneline(marchandises, train): 
     # Parcourir chaque marchandise triée
     for i in marchandises.all:

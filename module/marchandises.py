@@ -10,8 +10,7 @@ class Marchandises:
     def __lire_excel(self, chemin_fichier: str):
         """
         Lit un fichier Excel et retourne un DataFrame Pandas.
-    x
-        :param chemin_fichier: Chemin complet verxs le fichier Excel (.xlsx ou .xls)
+        :param chemin_fichier: Chemin complet vers le fichier Excel (.xlsx ou .xls)
         :return: DataFrame Pandas ou None si erreur
         """
         try:
@@ -26,7 +25,7 @@ class Marchandises:
                 engine="openpyxl" if chemin_fichier.endswith(".xlsx") else None
             )
             df.columns = df.columns.str.strip()
-            print(f"Fichier '{chemin_fichier}' lu avec succès.")
+            #print(f"Fichier \033[93m'{chemin_fichier}'\033[0m lu avec succès.")
 
             df.head()
             for i in range(len(df)):

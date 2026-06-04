@@ -2,7 +2,7 @@ from fonction.decorator import *
 from module.marchandise import Marchandise
 from module.conteneur import Conteneur
 from module.train import Train
-from fonction.Offline3d import obtenir_rotations
+from fonction.Guillotine3d import obtenir_rotations
 
 # Structure pour traquer les points d'ancrage en 3D
 class ExtremePoint:
@@ -36,7 +36,6 @@ def extremePoints3d_FirstFit(marchandises_triees : [Marchandise]):
             # Chercher le premier point extrême et la première orientation qui valide le placement
             for i, pt in enumerate(liste_extreme_points[conteneur]):
                 for dim_x, dim_y, dim_z in orientations:
-
                     # Vérifier si la marchandise ainsi orientée ne dépasse pas du conteneur
                     if (pt.x + dim_x <= conteneur.longueur and
                             pt.y + dim_y <= conteneur.largeur and

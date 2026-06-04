@@ -22,6 +22,13 @@ class Train:
     def ajouter(self,conteneur: Conteneur):
         self.conteneurs.append(conteneur)
 
+    def getVolumeRestant(self):
+        volume: int = 0
+        for i in range(len(self.conteneurs)):
+            volume += self.conteneurs[i].getVolumeRestante()
+        return volume
+
+
     def affichage_reduit(self):
         print("<===== Le train ( affichage reduit )======>")
         print(f"Le nombre de wagon est {len(self.conteneurs)}")
@@ -82,3 +89,5 @@ class Train:
         plt.show()
 
 
+    def affiche_mini(self):
+        print(f"Le train contient \033[93m{len(self.conteneurs)}\033[0m conteneurs ")

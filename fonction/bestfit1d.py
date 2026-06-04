@@ -1,7 +1,9 @@
 from module.marchandises import Marchandises
 from module.train import Train
 from module.conteneur import Conteneur
+from fonction.decorator import *
 
+@chronometrer
 def bestfit1doffline(marchandises, train): 
     #  Trier les marchandises par taille décroissante
     marchandises_trie = sorted(marchandises.all, key=lambda x: x.longueur, reverse=True)
@@ -44,6 +46,7 @@ def bestfit1doffline(marchandises, train):
             train.conteneurs.append(nouveau_wagon)
 
 
+@chronometrer
 def bestfit1doneline(marchandises, train): 
     # Parcourir chaque marchandise triée
     for i in marchandises.all:

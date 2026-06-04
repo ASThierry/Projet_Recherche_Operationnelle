@@ -18,16 +18,11 @@ class EspaceLibre:
                 self.x + self.longueur >= autre_espace.x + autre_espace.longueur and
                 self.y + self.largeur >= autre_espace.y + autre_espace.largeur)
 
-@chronometrer
-def guillotine2dOffline(marchandises_obj):
+
+def guillotine2d(marchandises_triees):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste d'espaces libres
     espaces_libres = {}
-
-    # Tri hors-ligne (Offline) : Du plus grand au plus petit (très important pour Guillotine)
-    # On utilise ta méthode getSurface()
-    marchandises_triees = sorted(marchandises_obj.all, key=lambda m: m.largeur, reverse=True)
-
     for marchandise in marchandises_triees:
         place = False
 
@@ -96,6 +91,13 @@ def guillotine2dOffline(marchandises_obj):
             if espace_haut.largeur > 0: espaces_libres[nouveau_conteneur].append(espace_haut)
 
     return train
+
+@chronometrer
+def guillotine2dOffline(marchandises_obj):
+    # Tri hors-ligne (Offline) : Du plus grand au plus petit (très important pour Guillotine)
+    # On utilise ta méthode getSurface()
+    marchandises_triees = sorted(marchandises_obj.all, key=lambda m: m.largeur, reverse=True)
+    return guillotine2d(marchandises_triees)
 
 
 def diviser_espace(espace, marchandise):

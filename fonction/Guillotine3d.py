@@ -16,7 +16,8 @@ class EspaceLibre3d:
         return self.longueur * self.largeur * self.hauteur
 
 def obtenir_rotations(m : Marchandise):
-    """Retourne les 6 permutations (longueur, largeur, hauteur) possibles pour une marchandise"""
+    """Retourne les 6 permutations (longueur, largeur, hauteur) possibles pour une marchandise
+    Si la marchandise est retournable"""
     perms=[]
     if m.retournable == 1:
         perms = [
@@ -28,7 +29,8 @@ def obtenir_rotations(m : Marchandise):
             (m.hauteur, m.largeur, m.longueur)
         ]
     else :
-        perm = [(m.longueur, m.largeur, m.hauteur)]
+        perms = [(m.longueur, m.largeur, m.hauteur),
+                ( m.largeur,m.longueur, m.hauteur)]
     # On supprime les doublons (si la boîte est un cube parfait par exemple)
     return list(set(perms))
 
@@ -80,29 +82,10 @@ def splitheuristique(espace : EspaceLibre3d, marchandise : Marchandise):
     return espaces_valides
 
 
-
-@chronometrer
-def guillotine3dOffline_split(marchandises_obj):
-    """
-
-    :param marchandises_obj: list(Marchandise)
-    :return: Train()
-    """
+def guillotine3d_opti(marchandises_triees):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste d'espaces libres
     espaces_libres = {}
-
-    # Tri hors-ligne (Offline) : Du plus grand au plus petit (très important pour Guillotine)
-    # On utilise ta méthode getSurface()
-
-    marchandises_triees = marchandises_obj.all
-    rail=marchandises_triees[5]
-    marchandises_triees = sorted(
-        marchandises_obj.all,
-        key=lambda m: (max(m.longueur, m.largeur, m.hauteur), m.getVolume()),
-        reverse=True
-    )    #marchandises_triees.insert(0, rail)
-    print(marchandises_triees.index(rail))
 
 
     for marchandise in marchandises_triees:
@@ -133,15 +116,14 @@ def guillotine3dOffline_split(marchandises_obj):
             marchandise.x=meilleur_espace.x
             marchandise.y=meilleur_espace.y
             marchandise.z=meilleur_espace.z
+
+
             espaces_libres[meilleur_conteneur].pop(meilleur_indice)
             meilleur_conteneur.contenu.append(marchandise)
-            espaceopti = splitheuristique(meilleur_espace, marchandise)
-            espaces_libres[meilleur_conteneur].extend(espaceopti)
-
             marchandise.longueur, marchandise.largeur, marchandise.hauteur = meilleure_orientation
 
-
-
+            espaceopti = splitheuristique(meilleur_espace, marchandise)
+            espaces_libres[meilleur_conteneur].extend(espaceopti)
         # Si aucun espace trouvé, on ouvre un nouveau conteneur
         else:
             nouveau_conteneur = Conteneur()
@@ -161,24 +143,39 @@ def guillotine3dOffline_split(marchandises_obj):
 
     return train
 
+@chronometrer
+def guillotine3dOffline_opti(marchandises_obj):
+    """
+    :param marchandises_obj: list(Marchandise)
+    :return: Train()
+    """
+    # Tri hors-ligne (Offline) : Du plus grand au plus petit (très important pour Guillotine)
+    # On utilise ta méthode getSurface()
+    marchandises_triees = marchandises_obj.all
+    #rail=marchandises_triees[5]
+    marchandises_triees = sorted(
+        marchandises_obj.all,
+        key=lambda m: (max(m.longueur, m.largeur, m.hauteur), m.getVolume()),
+        reverse=True
+    )    #marchandises_triees.insert(0, rail)
+    #print(marchandises_triees.index(rail))
+    return guillotine3d_opti(marchandises_triees)
 
 @chronometrer
-def guillotine3dOffline(marchandises_obj):
+def guillotine3dOnline_opti(marchandises_obj):
     """
+        :param marchandises_obj: list(Marchandise)
+        :return: Train()
+        """
+    # Tri en ligne (Online)
+    marchandises_triees = marchandises_obj.all
+    return guillotine3d_opti(marchandises_triees)
 
-    :param marchandises_obj:
-    :return: Train()
-    Le guillotine sans optimisation de base pour le 3d
-    """
+
+def guillotine3d(marchandises_triees):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste d'espaces libres
     espaces_libres = {}
-
-    # Tri hors-ligne (Offline) : Du plus grand au plus petit (très important pour Guillotine)
-    # On utilise ta méthode getSurface()
-
-    marchandises_triees = sorted(marchandises_obj.all, key=lambda m: m.hauteur, reverse=True)
-
     for marchandise in marchandises_triees:
         place = False
         # Chercher dans les conteneurs existants
@@ -274,3 +271,25 @@ def guillotine3dOffline(marchandises_obj):
 
 
     return train
+
+@chronometrer
+def guillotine3dOffline(marchandises_obj):
+    """
+
+    :param marchandises_obj:
+    :return: Train()
+    Le guillotine sans optimisation de base pour le 3d en l'adaptant depuis le 2d
+    """
+    # Tri hors-ligne (Offline) : Du plus grand au plus petit (très important pour Guillotine)
+    # On utilise ta méthode getSurface()
+
+    marchandises_triees = sorted(marchandises_obj.all, key=lambda m: m.hauteur, reverse=True)
+
+    return guillotine3d(marchandises_triees)
+
+@chronometrer
+def guillotine3dOnline(marchandises_obj):
+    marchandises_triees = marchandises_obj.all
+    return guillotine3d(marchandises_triees)
+
+
