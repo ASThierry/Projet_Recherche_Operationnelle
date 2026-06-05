@@ -205,6 +205,24 @@ Les marchandises sont placées :
 2. Le plus au fond possible
 3. Le plus à gauche possible
 
+## Extreme Points 3D adapté au challenge temps
+
+**Fichier :** `extermePoint3d-challenge_temps.py`
+
+Cette fonction reprend les bases de **extreme point**. Mais diminue la complexité moyenne pour grandement diminuer le temps d'execution
+
+
+Modification principal :
+
+1. On enlève le tri des orientations 
+2. On diminue le nombre d'orientation les conteneurs et marchandises étant dans le sens des longueurs
+
+D'autre modification essayer mais non fructueuse donc retiré aprés test
+1. Le Filtre Volumétrique : Si le volume restant que contenaire est inférieur à celui de la marchandise, les extremes points de ce contener ne sont pas tester
+2. Le "Fast Pop" : Plutot qu'enlever un extreme point au millieu du tableau et décaller le reste, on le remplace par la dernière valeur et on enlève la dernière valeur
+3. Remplacement des objets Extreme Point en tuple
+
+
 ### Complexité
 
 | Cas      | Complexité |

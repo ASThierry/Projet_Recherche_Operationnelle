@@ -44,5 +44,13 @@ def calculer_moyenne_sac():
     calculer_moyenne_temps("Glouton_optimise")
     calculer_moyenne_temps("brute_force")
 
+def chalenge_moyenne_temps():
+    calculer_moyenne_temps("extremePoints3dOffline")
+    calculer_moyenne_temps("extremePoints3dOffline_challenge")
+    calculer_moyenne_temps("extremePoints3dOnline")
+    calculer_moyenne_temps("extremePoints3dOnline_challenge")
+
+
 if __name__ == "__main__":
-    calculer_moyenne_sac()
+    #calculer_moyenne_sac()
+    chalenge_moyenne_temps()

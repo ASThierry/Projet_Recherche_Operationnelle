@@ -1,5 +1,8 @@
 """
-Fichier fait par Thierry
+Fichier fait par Thierry et Mathis
+Dans le but du chalenge temps Online
+On enlève le tri des orientations
+On diminue le nombre d'orientation les conteneurs et marchandises étant dans le centre des longueurs
 """
 from fonction.decorator import *
 from module.marchandise import Marchandise
@@ -15,12 +18,14 @@ class ExtremePoint:
 
 
 def get_orientations(l, w, h):
-        return list({(l, w, h), (l, h, w), (w, l, h), (w, h, l), (h, l, w), (h, w, l)})
-# ===> Thierry
-def extremePoints3d_FirstFit(marchandises_triees : [Marchandise]):
+        return list({(l, w, h), (l, h, w)})
+# ===> Thierryccc
+def extremePoints3d_chalenge(marchandises_triees : [Marchandise]):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste de points extrêmes disponibles
     liste_extreme_points = {}
+    #Dictionnaire ultra-rapide pour traquer le volume restant sans recalculer
+    volumes_restants = {}
     for marchandise in marchandises_triees:
         place = False
         # Récupérer toutes les rotations possibles pour cette marchandise
@@ -33,7 +38,7 @@ def extremePoints3d_FirstFit(marchandises_triees : [Marchandise]):
         for conteneur in train.conteneurs:
 
             # OPTIMISATION : On trie la liste des points une seule fois avant de tester les points pour cette marchandise
-            # liste_extreme_points[conteneur].sort(key=lambda p: (p.z, p.y, p.x))
+            #liste_extreme_points[conteneur].sort(key=lambda p: (p.z, p.y, p.x))
 
             # Chercher le premier point extrême et la première orientation qui valide le placement
             for i, pt in enumerate(liste_extreme_points[conteneur]):
@@ -69,7 +74,6 @@ def extremePoints3d_FirstFit(marchandises_triees : [Marchandise]):
 
                             # Génération des 3 nouveaux points extrêmes (projections)
                             pt_x = ExtremePoint(pt.x + dim_x, pt.y, pt.z)
-                            pt_y = ExtremePoint(0, dim_y, 0)
                             pt_y = ExtremePoint(pt.x, pt.y + dim_y, pt.z)
                             pt_z = ExtremePoint(pt.x, pt.y, pt.z + dim_z)
 
@@ -125,18 +129,18 @@ def extremePoints3d_FirstFit(marchandises_triees : [Marchandise]):
     return train
 
 @chronometrer
-def extremePoints3dOffline(marchandises_obj):
+def extremePoints3dOffline_challenge(marchandises_obj):
     # Tri hors-ligne (Offline) : Du plus grand volume au plus petit
     marchandises_triees = sorted(
         marchandises_obj.all,
         key=lambda m: m.getVolume(),
         reverse=True
     )
-    return extremePoints3d_FirstFit(marchandises_triees)
+    return extremePoints3d_chalenge(marchandises_triees)
 
 
 @chronometrer
-def extremePoints3dOnline(marchandises_obj):
+def extremePoints3dOnline_challenge(marchandises_obj):
     # Tri hors-ligne (Offline) : Du plus grand volume au plus petit
     marchandises_triees = marchandises_obj.all
-    return extremePoints3d_FirstFit(marchandises_triees)
+    return extremePoints3d_chalenge(marchandises_triees)

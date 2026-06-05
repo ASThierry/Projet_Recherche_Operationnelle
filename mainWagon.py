@@ -1,12 +1,12 @@
 from module.marchandises import Marchandises
 from module.train import Train
-from fonction.Offline2d import guillotine2dOffline, maxrects2dOffline
 from fonction.Online2d import guillotine2dOnline
 from fonction.Guillotine3d import guillotine3dOffline,guillotine3dOnline,guillotine3dOffline_opti,guillotine3dOnline_opti
 from fonction.Offline2d import guillotine2dOffline
 from fonction.extermePoint3d import extremePoints3dOnline,extremePoints3dOffline
 from fonction.bestfit1d import bestfit1doffline,bestfit1doneline
 from fonction.fristfit1d import firstfit1doffline, firstfit1doneline
+from fonction.extermePoint3d_challenge_temp import extremePoints3dOnline_challenge, extremePoints3dOffline_challenge
 import random
 import copy
 
@@ -168,11 +168,34 @@ def CalculeMoyenneTemps(iteration : int = 100):
         train: Train = extremePoints3dOffline(marchandises)
     train.affiche_mini()
 
+def ChalengeTemps(iteration = 500):
+    train :Train
+    # analyse de temps du 3d Online avec extrem point
+    print("<===== Debut de l'annalyse de 3d offline avec extern point challenge temps ======>")
+    for it in range(iteration):
+        marchandises = Marchandises()
+        train: Train = extremePoints3dOffline_challenge(marchandises)
+    train.affiche_mini()
+
+    print("<===== Debut de l'annalyse de 3d online avec extern point challenge temps ======>")
+    for it in range(iteration):
+        marchandises = Marchandises()
+        train: Train = extremePoints3dOnline_challenge(marchandises)
+    train.affiche_mini()
+
+
+def test_extremePoints3dOnline_chalenge():
+    marchandises = Marchandises()
+    train: Train = extremePoints3dOnline_challenge(marchandises)
+    train.affiche_mini()
+    train: Train = extremePoints3dOffline_challenge(marchandises)
+    train.affiche_mini()
+
 
 if __name__ == '__main__':
     #testOffline2d()
     #testExtremePointOnline3d()
-    testExtremePointOffline3d()
+    #testExtremePointOffline3d()
     #testOffline2d()
     #testOnline2d()
     #testGuillotineOffline3d()
@@ -181,6 +204,8 @@ if __name__ == '__main__':
     #train.affichage_reduit()
     #train.afficher_graphique_3d()
     #CalculeMoyenneTemps()
+    #ChalengeTemps()
+    test_extremePoints3dOnline_chalenge()
 
 def trouver_le_train_parfait(iterations=5000):
     random.seed(123)
@@ -228,5 +253,4 @@ def trouver_le_train_parfait(iterations=5000):
             if min_conteneurs <= 15:
                 print("Objectif atteint !")
                 break
-
     return meilleur_train
