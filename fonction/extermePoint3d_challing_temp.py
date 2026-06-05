@@ -1,8 +1,10 @@
+"""
+Fichier fait par Thierry
+"""
 from fonction.decorator import *
 from module.marchandise import Marchandise
 from module.conteneur import Conteneur
 from module.train import Train
-from fonction.Offline3d import obtenir_rotations
 
 # Structure pour traquer les points d'ancrage en 3D
 class ExtremePoint:
@@ -14,7 +16,7 @@ class ExtremePoint:
 
 def get_orientations(l, w, h):
         return list({(l, w, h), (l, h, w), (w, l, h), (w, h, l), (h, l, w), (h, w, l)})
-
+# ===> Thierry
 def extremePoints3d_FirstFit(marchandises_triees : [Marchandise]):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste de points extrêmes disponibles

@@ -14,7 +14,7 @@ class ExtremePoint:
 
 def get_orientations(l, w, h):
         return list({(l, w, h), (l, h, w), (w, l, h), (w, h, l), (h, l, w), (h, w, l)})
-
+# ==> Thierry
 def extremePoints3d_FirstFit(marchandises_triees : [Marchandise]):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste de points extrêmes disponibles

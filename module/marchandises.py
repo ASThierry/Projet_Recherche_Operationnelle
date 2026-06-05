@@ -2,6 +2,7 @@ import os
 import pandas as pd
 from module.marchandise import Marchandise
 
+# ==> Mathis
 class Marchandises:
     def __init__(self):
         self.all : [Marchandise] = []

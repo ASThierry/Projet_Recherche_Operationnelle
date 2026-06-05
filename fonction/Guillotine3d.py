@@ -1,8 +1,12 @@
+"""
+Fichier fait par Mathis
+"""
 from fonction.decorator import *
 from module.marchandise import Marchandise
 from module.conteneur import Conteneur
 from module.train import Train
 
+# ==> Mathis
 class EspaceLibre3d:
     def __init__(self, x, y,z, longueur, largeur,hauteur):
         self.x = x
@@ -15,6 +19,7 @@ class EspaceLibre3d:
     def getVolume(self):
         return self.longueur * self.largeur * self.hauteur
 
+# === >Mathis
 def obtenir_rotations(m : Marchandise):
     """Retourne les 6 permutations (longueur, largeur, hauteur) possibles pour une marchandise
     Si la marchandise est retournable"""
@@ -34,6 +39,7 @@ def obtenir_rotations(m : Marchandise):
     # On supprime les doublons (si la boîte est un cube parfait par exemple)
     return list(set(perms))
 
+#==> Mathis
 def splitheuristique(espace : EspaceLibre3d, marchandise : Marchandise):
     variations = []
 
@@ -81,7 +87,7 @@ def splitheuristique(espace : EspaceLibre3d, marchandise : Marchandise):
 
     return espaces_valides
 
-
+#==> Mathis
 def guillotine3d_opti(marchandises_triees):
     train = Train()
     # Dictionnaire pour lier un conteneur à sa liste d'espaces libres
@@ -142,6 +148,7 @@ def guillotine3d_opti(marchandises_triees):
 
 
     return train
+
 
 @chronometrer
 def guillotine3dOffline_opti(marchandises_obj):

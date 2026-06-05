@@ -6,7 +6,7 @@ from fonction.decorator import *
 def brute_force(liste_objets, capacite_restante):
     return brute_force_recursif(liste_objets, capacite_restante)
 
-
+#==> Mathis
 def brute_force_recursif(liste_objets, capacite_restante, index=0):
     # Condition d'arrêt : on a parcouru tous les objets ou le sac est plein
     if index == len(liste_objets) or capacite_restante <= 0:

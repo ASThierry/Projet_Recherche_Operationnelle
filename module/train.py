@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import random
 
 
-
+# ==> Mathis
 class Train:
     def __init__(self):
         self.conteneurs : [Conteneur]= []
@@ -39,6 +39,7 @@ class Train:
             self.conteneurs[i].affichage()
         print(f"<===== il reste dans le train : {volume} m³ de libre =====>")
 
+    #===> Mathis et Gemini
     def afficher_graphique_3d(self):
         """
         Génère une fenêtre Matplotlib avec une représentation 3D de chaque conteneur.

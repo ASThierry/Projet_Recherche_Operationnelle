@@ -1,5 +1,5 @@
 
-
+# ==> Mathis et Thierry
 class Marchandise:
     def __init__(self, numero,designation,longueur,largeur, hauteur,retournable :int):
         self.numero = numero
